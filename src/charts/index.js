@@ -16,5 +16,6 @@ export CandlestickChart from '../charts/candlestick';
 export RangeColumnChart from '../charts/range_column';
 export RangeBarChart from '../charts/range_bar';
 export RangeAreaChart from '../charts/range_area';
+export CloudChart from '../charts/cloud';
 export RangeSplineAreaChart from '../charts/range_spline_area';
 export PieChart from '../charts/pie';

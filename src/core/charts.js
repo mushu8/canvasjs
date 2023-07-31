@@ -1,63 +1,64 @@
 
-import CanvasJSObject from './canvasjs';
-import Animator from './animator';
-import DataSeries from './data_series';
-import TextBlock from './text_block';
-import RenderHelper from '../helpers/render';
-import LayoutManager from './layout_manager';
-import EventManager from './event_manager';
-import ToolTip from './tooltip';
-import CultureInfo from '../core/culture_info';
+import { defaultOptions, isDebugMode } from '../constants/options';
+import { colorSets } from '../constants/themes';
 import Axis from '../core/axis';
-import Title from '../core/title';
+import CultureInfo from '../core/culture_info';
 import Legend from '../core/legend';
+import Title from '../core/title';
 import AnimationHelper from '../helpers/animator';
-import {colorSets} from '../constants/themes';
-import {isDebugMode, defaultOptions} from '../constants/options';
+import RenderHelper from '../helpers/render';
+import Animator from './animator';
+import CanvasJSObject from './canvasjs';
+import DataSeries from './data_series';
+import EventManager from './event_manager';
+import LayoutManager from './layout_manager';
+import TextBlock from './text_block';
+import ToolTip from './tooltip';
 // import {inherits} from 'util';
 
 import {
-	addEvent,
-	setCanvasSize,
 	addArrayIndexOf,
-	hide,
-	show,
-	getMouseCoordinates,
-	getProperty,
-	isCanvasSupported,
-	extend,
+	addEvent,
+	compareDataPointX,
 	createCanvas,
+	extend,
 	extendCtx,
-	getObjectId,
 	getDevicePixelBackingStoreRatio,
-	trimString,
-	numberFormat,
 	getLineDashArray,
+	getMouseCoordinates,
+	getObjectId,
+	getProperty,
+	hide,
 	intToHexColorString,
-	compareDataPointX
+	isCanvasSupported,
+	numberFormat,
+	setCanvasSize,
+	show,
+	trimString
 } from '../helpers/utils';
 
 import {
-	SplineChart,
-	ColumnChart,
-	StackedColumnChart,
-	StackedColumn100Chart,
-	BarChart,
-	StackedBarChart,
-	StackedBar100Chart,
 	AreaChart,
-	SplineAreaChart,
-	StepAreaChart,
-	StackedAreaChart,
-	StackedArea100Chart,
+	BarChart,
 	BubbleChart,
-	ScatterChart,
 	CandlestickChart,
-	RangeColumnChart,
-	RangeBarChart,
+	CloudChart,
+	ColumnChart,
+	PieChart,
 	RangeAreaChart,
+	RangeBarChart,
+	RangeColumnChart,
 	RangeSplineAreaChart,
-	PieChart
+	ScatterChart,
+	SplineAreaChart,
+	SplineChart,
+	StackedArea100Chart,
+	StackedAreaChart,
+	StackedBar100Chart,
+	StackedBarChart,
+	StackedColumn100Chart,
+	StackedColumnChart,
+	StepAreaChart
 } from '../charts/index';
 
 var devicePixelBackingStoreRatio = getDevicePixelBackingStoreRatio();
@@ -905,10 +906,12 @@ Chart.prototype.render = function (options) {
 				animationInfo = this.renderRangeColumn(plotUnit);
 			else if (plotUnit.type === "rangeBar")
 				animationInfo = this.renderRangeBar(plotUnit);
-			else if (plotUnit.type === "rangeArea")
-				animationInfo = this.renderRangeArea(plotUnit);
-			else if (plotUnit.type === "rangeSplineArea")
-				animationInfo = this.renderRangeSplineArea(plotUnit);
+			else if (plotUnit.type === 'rangeArea')
+        animationInfo = this.renderRangeArea(plotUnit)
+      else if (plotUnit.type === 'cloud')
+        animationInfo = this.renderCloud(plotUnit)
+      else if (plotUnit.type === 'rangeSplineArea')
+        animationInfo = this.renderRangeSplineArea(plotUnit)
 
 			for (var k = 0; k < plotUnit.dataSeriesIndexes.length; k++) {
 				this._dataInRenderedOrder.push(this.data[plotUnit.dataSeriesIndexes[k]]);
@@ -3251,6 +3254,8 @@ Chart.prototype.renderRangeColumn = RangeColumnChart;
 Chart.prototype.renderRangeBar = RangeBarChart;
 
 Chart.prototype.renderRangeArea = RangeAreaChart;
+
+Chart.prototype.renderCloud = CloudChart
 
 Chart.prototype.renderRangeSplineArea = RangeSplineAreaChart;
 
